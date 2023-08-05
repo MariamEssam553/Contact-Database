@@ -1,0 +1,70 @@
+﻿@page "/AddContact"
+@model HW10.Pages.AddContactModel
+@{
+    ViewData["Title"] = "Add Contact";
+}
+
+<div class="container d-flex justify-content-center">
+    <div class="card">
+        <div class="card-header bg-primary mb-1" style="color: white; font-weight:bold; ">
+            Enter contact info
+        </div>
+        <div class="p-3">
+            <form method="POST">
+                <div class="row">
+                    <div class="col-md-1 mb-3 p-0" style="display: flex;align-items: center; margin-left:51px;">
+                        <label for="title">Title</label>
+                    </div>
+                    <div class="col-md-4 mb-3 pe-1">
+                        <input class="form-control" type="text" id="title" name="NewContact.Title" placeholder="Mrs, Dr, etc." required />
+                    </div>
+                </div>
+                <div class="row" style="justify-content: center;">
+                    <div class="col-md-5 mb-3">
+                        <label class="pb-1" for="firstName">First Name</label>
+                        <input class="form-control" type="text" id="firstName" name="NewContact.FirstName" placeholder="First Name" required />
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <label class="pb-1" for="lastName">Last Name</label>
+                        <input class="form-control" type="text" id="lastName" name="NewContact.LastName" placeholder="Last Name" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3 ms-5 ps-1">
+                        <label>Married :</label>
+                    </div>
+                    <div class="form-check col-md-2 mb-3">
+                        <input class="form-check-input" type="radio" value="true" name="NewContact.MartialStatus" id="married" required>
+                        <label class="form-check-label" for="married">Yes</label>
+                    </div>
+                    <div class="form-check col-md-2 mb-3">
+                        <input class="form-check-input" type="radio" value="false" name="NewContact.MartialStatus" id="notMarried" required>
+                        <label class="form-check-label" for="notMarried">No</label>
+                    </div>
+                </div>
+                <div class="row" style="justify-content: center;">
+                    <div class="col-md-10 mb-3">
+                        <label class="pb-1" for="email">Email</label>
+                        <input class="form-control" type="email" id="email" name="NewContact.Email" placeholder="Email" required />
+                    </div>
+                </div>
+                <div class="row" style="justify-content: center;">
+                    <div class="col-md-10 mb-3">
+                        <label class="pb-1" for="birthDate">Choose the birth date</label>
+                        <input type="date" class="form-control" id="birthDate" name="NewContact.BirthDate" required />
+                    </div>
+                </div>
+                <div class="row" style="justify-content: center;">
+                    <div class="col-md-10 mb-3">
+                        <label class="pb-1" for="description">Description</label>
+                        <textarea class="form-control" id="description" name="NewContact.Description" rows="2" required></textarea>
+                    </div>
+                </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="row" style="justify-content: center;">
+                    <input type="submit" value="Add" class="btn btn-outline-primary col-md-2" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
