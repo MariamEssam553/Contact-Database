@@ -42,7 +42,7 @@ public class AddContactModel : PageModel
             {"status", NewContact.MartialStatus}
         });
 
-        return RedirectToPage();
+        return RedirectToPage("/ContactsList");
     }
 }
 
