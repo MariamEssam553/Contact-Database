@@ -7,7 +7,7 @@ namespace HW10.Pages;
 public class AddContactModel : PageModel
 {
     [BindProperty]
-    public Contact NewContact { get; set; } = new();
+    public Contact NewContact { get; set; } = new Contact();
     private readonly EdgeDBClient _client;
 
     public AddContactModel(EdgeDBClient client)
@@ -57,7 +57,6 @@ public class Contact
     public string? BirthDate { get; set; }
 
     public Contact() { }
-
     public Contact(string firstName, string lastName, string email, string description,
         bool status, string date, string title)
     {
