@@ -4,67 +4,98 @@
     ViewData["Title"] = "Add Contact";
 }
 
-<div class="container d-flex justify-content-center">
-    <div class="card">
-        <div class="card-header bg-primary mb-1" style="color: white; font-weight:bold; ">
-            Enter contact info
-        </div>
-        <div class="p-3">
-            <form method="POST">
-                <div class="row">
-                    <div class="col-md-1 mb-3 p-0" style="display: flex;align-items: center; margin-left:51px;">
-                        <label for="title">Title</label>
+@if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div class="container d-flex justify-content-center">
+        <div class="card">
+            <div class="card-header bg-primary mb-1" style="color: white; font-weight:bold; ">
+                Enter contact info
+            </div>
+            <div class="p-3">
+                <form method="POST" asp-page="/AddContact" asp-page-handler="@(string.IsNullOrEmpty(Model.NewContact.FirstName) ? "AddContact" : "EditContact")">
+                    <div class="row">
+                        <div class="col-md-3 mb-3 ms-5 ps-1">
+                            <label>Contact Role :</label>
+                        </div>
+                        <div class="form-check col-md-2 mb-3">
+                            <input class="form-check-input" type="radio" asp-for="NewContact.ContactRole" value="Admin" name="NewContact.ContactRole" id="admin" required>
+                            <label class="form-check-label" for="admin">Admin</label>
+                        </div>
+                        <div class="form-check col-md-2 mb-3">
+                            <input class="form-check-input" type="radio" asp-for="NewContact.ContactRole" value="Normal" name="NewContact.ContactRole" id="normal" required>
+                            <label class="form-check-label" for="normal">Normal</label>
+                        </div>
                     </div>
-                    <div class="col-md-4 mb-3 pe-1">
-                        <input class="form-control" type="text" id="title" name="NewContact.Title" placeholder="Mrs, Dr, etc." required />
+
+                    <div class="row">
+                        <div class="col-md-1 mb-3 p-0" style="display: flex;align-items: center; margin-left:51px;">
+                            <label for="title">Title</label>
+                        </div>
+                        <div class="col-md-4 mb-3 pe-1">
+                            <input class="form-control" type="text" id="title" name="NewContact.Title" placeholder="Mrs, Dr, etc." required />
+                        </div>
                     </div>
-                </div>
-                <div class="row" style="justify-content: center;">
-                    <div class="col-md-5 mb-3">
-                        <label class="pb-1" for="firstName">First Name</label>
-                        <input class="form-control" type="text" id="firstName" name="NewContact.FirstName" placeholder="First Name" required />
+                    <div class="row" style="justify-content: center;">
+                        <div class="col-md-5 mb-3">
+                            <label class="pb-1" for="firstName">First Name</label>
+                            <input class="form-control" type="text" id="firstName" name="NewContact.FirstName" placeholder="First Name" required />
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <label class="pb-1" for="lastName">Last Name</label>
+                            <input class="form-control" type="text" id="lastName" name="NewContact.LastName" placeholder="Last Name" required />
+                        </div>
                     </div>
-                    <div class="col-md-5 mb-3">
-                        <label class="pb-1" for="lastName">Last Name</label>
-                        <input class="form-control" type="text" id="lastName" name="NewContact.LastName" placeholder="Last Name" required />
+                    <div class="row" style="justify-content: center;">
+                        <div class="col-md-5 mb-3">
+                            <label class="pb-1" for="username">Username</label>
+                            <input class="form-control" type="text" id="username" name="NewContact.Username" placeholder="Username" required />
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <label class="pb-1" for="password">Password</label>
+                            <input class="form-control" type="password" id="password" name="NewContact.Password" placeholder="Password" required />
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 mb-3 ms-5 ps-1">
-                        <label>Married :</label>
+                    <div class="row">
+                        <div class="col-md-3 mb-3 ms-5 ps-1">
+                            <label>Married :</label>
+                        </div>
+                        <div class="form-check col-md-2 mb-3">
+                            <input class="form-check-input" type="radio" asp-for="NewContact.Status" value="true" name="NewContact.Status" id="married" required>
+                            <label class="form-check-label" for="married">Yes</label>
+                        </div>
+                        <div class="form-check col-md-2 mb-3">
+                            <input class="form-check-input" type="radio" asp-for="NewContact.Status" value="false" name="NewContact.Status" id="notMarried" required>
+                            <label class="form-check-label" for="notMarried">No</label>
+                        </div>
                     </div>
-                    <div class="form-check col-md-2 mb-3">
-                        <input class="form-check-input" type="radio" asp-for="NewContact.MartialStatus" value="true" name="NewContact.MartialStatus" id="married" required>
-                        <label class="form-check-label" for="married">Yes</label>
+                    <div class="row" style="justify-content: center;">
+                        <div class="col-md-10 mb-3">
+                            <label class="pb-1" for="email">Email</label>
+                            <input class="form-control" type="email" id="email" name="NewContact.Email" placeholder="Email" required />
+                        </div>
                     </div>
-                    <div class="form-check col-md-2 mb-3">
-                        <input class="form-check-input" type="radio" asp-for="NewContact.MartialStatus" value="false" name="NewContact.MartialStatus" id="notMarried" required>
-                        <label class="form-check-label" for="notMarried">No</label>
+                    <div class="row" style="justify-content: center;">
+                        <div class="col-md-10 mb-3">
+                            <label class="pb-1" for="birthDate">Choose the birth date</label>
+                            <input type="date" class="form-control" id="birthDate" name="NewContact.BirthDate" required />
+                        </div>
                     </div>
-                </div>
-                <div class="row" style="justify-content: center;">
-                    <div class="col-md-10 mb-3">
-                        <label class="pb-1" for="email">Email</label>
-                        <input class="form-control" type="email" id="email" name="NewContact.Email" placeholder="Email" required />
+                    <div class="row" style="justify-content: center;">
+                        <div class="col-md-10 mb-3">
+                            <label class="pb-1" for="description">Description</label>
+                            <textarea class="form-control" id="description" name="NewContact.Description" rows="2" required></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="row" style="justify-content: center;">
-                    <div class="col-md-10 mb-3">
-                        <label class="pb-1" for="birthDate">Choose the birth date</label>
-                        <input type="date" class="form-control" id="birthDate" name="NewContact.BirthDate" required />
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="row" style="justify-content: center;">
+                        <input type="submit" value="Add" class="btn btn-outline-primary col-md-2" />
                     </div>
-                </div>
-                <div class="row" style="justify-content: center;">
-                    <div class="col-md-10 mb-3">
-                        <label class="pb-1" for="description">Description</label>
-                        <textarea class="form-control" id="description" name="NewContact.Description" rows="2" required></textarea>
-                    </div>
-                </div>
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="row" style="justify-content: center;">
-                    <input type="submit" value="Add" class="btn btn-outline-primary col-md-2" />
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    Response.Redirect("/");
+}
