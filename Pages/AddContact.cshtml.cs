@@ -48,34 +48,34 @@ public class AddContactModel : PageModel
         return RedirectToPage("/ContactsList");
     }
 
-    public void OnPostEditAsync()
-    {
-        string? contactJson = Request.Form["contact"];
-        if (contactJson != null)
-        {
-            Contact? contact = System.Text.Json.JsonSerializer.Deserialize<Contact>(contactJson);
-            ViewData["contact"] = contact;
-        }
-    }
+    //public void OnPostEditAsync()
+    //{
+    //    string? contactJson = Request.Form["contact"];
+    //    if (contactJson != null)
+    //    {
+    //        Contact? contact = System.Text.Json.JsonSerializer.Deserialize<Contact>(contactJson);
+    //        ViewData["contact"] = contact;
+    //    }
+    //}
 
-    public async Task<IActionResult> OnPostEditContact()
-    {
-        var query = "UPDATE Contact FILTER .username = <str>$username AND .password = <str>$password SET {firstName := <str>$firstName, lastName := <str>$lastName, email := <str>$email, title := <str>$title, description := <str>$description, birthDate := <str>$birthDate, status := <bool>$status}";
-        await _client.ExecuteAsync(query, new Dictionary<string, object?>
-        {
-            {"username", NewContact.Username},
-            {"password", NewContact.Password},
-            {"firstName", NewContact.FirstName},
-            {"lastName", NewContact.LastName},
-            {"email", NewContact.Email},
-            {"title", NewContact.Title},
-            {"description", NewContact.Description},
-            {"birthDate", NewContact.BirthDate},
-            {"status", NewContact.Status}
-        });
+    //public async Task<IActionResult> OnPostEditContact()
+    //{
+    //    var query = "UPDATE Contact FILTER .username = <str>$username AND .password = <str>$password SET {firstName := <str>$firstName, lastName := <str>$lastName, email := <str>$email, title := <str>$title, description := <str>$description, birthDate := <str>$birthDate, status := <bool>$status}";
+    //    await _client.ExecuteAsync(query, new Dictionary<string, object?>
+    //    {
+    //        {"username", NewContact.Username},
+    //        {"password", NewContact.Password},
+    //        {"firstName", NewContact.FirstName},
+    //        {"lastName", NewContact.LastName},
+    //        {"email", NewContact.Email},
+    //        {"title", NewContact.Title},
+    //        {"description", NewContact.Description},
+    //        {"birthDate", NewContact.BirthDate},
+    //        {"status", NewContact.Status}
+    //    });
 
-        return RedirectToPage("/ContactsList");
-    }
+    //    return RedirectToPage("/ContactsList");
+    //}
 }
 
 public class Contact

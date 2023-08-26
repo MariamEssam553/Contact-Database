@@ -17,7 +17,7 @@ public class ContactsListModel : PageModel
     }
     public async Task<IActionResult> OnGet()
     {
-        var query = $@"SELECT Contact {{ username, contactRole, firstName, lastName, email, description, birthDate, status, title}}";
+        var query = $@"SELECT Contact {{ id, username, contactRole, firstName, lastName, email, description, birthDate, status, title}}";
         var contacts = await _client.QueryAsync<Contact>(query);
 
         foreach (var contact in contacts)
@@ -37,4 +37,6 @@ public class ContactsListModel : PageModel
 
         return Redirect("/");
     }
+
+
 }

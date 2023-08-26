@@ -8,7 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddAntiforgery();
 builder.Services.AddHttpClient();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+});
 builder.Services.AddEdgeDB(EdgeDBConnection.FromInstanceName("ContactsDB"), config =>
 {
     config.SchemaNamingStrategy = INamingStrategy.CamelCaseNamingStrategy;

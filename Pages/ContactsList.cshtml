@@ -52,16 +52,17 @@
                             <td>@contact.BirthDate</td>
                             <td>@status</td>
                             <td>@contact.Description</td>
+
                             @if (User.IsInRole("Admin"))
                             {
                                 <td> 
                                     <div class="d-flex">
-                                        <form method="POST" asp-page="/AddContact" asp-page-handler="Edit">
-                                            <input type="hidden" name="contact" value="@System.Text.Json.JsonSerializer.Serialize(@contact)" />
+                                        <form method="post" asp-page="/EditContact" asp-route-valueToPass="@contact.Username">
+                                            <input type="hidden" name="contact" />
                                             <button type="submit" class="btn btn-warning mx-2">Edit</button>
                                         </form>
                                         <form method="POST" asp-page="/AddContact" asp-page-handler="Edit">
-                                            <input type="hidden" name="contact" value="@System.Text.Json.JsonSerializer.Serialize(@contact)" />
+                                            <input type="hidden" name="contact" />
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
                                     </div>
