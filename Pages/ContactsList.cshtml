@@ -4,71 +4,107 @@
     ViewData["Title"] = "Contacts List";
 }
 
-<div class="container" style="display: flex;flex-direction: column;align-items: center;">
-    <div class="input-group mb-3" style="width: 50%;">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">Search</span>
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <div class="container" style="display: flex;flex-direction: column;align-items: center;">
+        <div class="input-group mb-3" style="width: 50%;">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Search</span>
+            </div>
+            <input type="text" id="searchInput" class="form-control" placeholder="First name, last name or email" aria-label="Username" aria-describedby="basic-addon1">
+            <form method="post" asp-page-handler="Logout">
+                <input type="submit" class="btn btn-success mx-5" value="Logout" />
+            </form>
         </div>
-        <input type="text" id="searchInput" class="form-control" placeholder="First name, last name or email" aria-label="Username" aria-describedby="basic-addon1">
-    </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Title</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Birth Date (yyyy-mm-dd)</th>
-                <th scope="col">Marital Status</th>
-                <th scope="col">Description</th>
-            </tr>
-        </thead>
-        <tbody id="resultTable">
-            @if (Model.ContactsList.Count > 0)
-            {
-                @for (int i = 0; i < Model.ContactsList.Count; i++)
-                {
-                    var contact = Model.ContactsList[i];
-                    var status = contact.MartialStatus == true ? "Is Married" : "Not Married";
-
-                    <tr class="search-filter">
-                        <th scope="row">@(i + 1)</th>
-                        <td>@contact.Title</td>
-                        <td>@contact.FirstName</td>
-                        <td>@contact.LastName</td>
-                        <td>@contact.Email</td>
-                        <td>@contact.BirthDate</td>
-                        <td>@status</td>
-                        <td>@contact.Description</td>
-                    </tr>
-                }
-            }
-            else
-            {
+        
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td colspan="8">No contacts to show.</td>
+                    <th scope="col">ID</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Contact Role</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Birth Date<br />(yyyy-mm-dd)</th>
+                    <th scope="col">Marital Status</th>
+                    <th scope="col">Description</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    <script>
-        window.addEventListener("load", function () {
-            var input = document.getElementById("searchInput");
-            var table = document.getElementById("resultTable");
-            var rows = table.getElementsByTagName("tr");
+            </thead>
+            <tbody id="resultTable">
+                @if (Model.ContactsList.Count > 0)
+                {
+                    @for (int i = 0; i < Model.ContactsList.Count; i++)
+                    {
+                        var contact = Model.ContactsList[i];
+                        var status = contact.Status.ToString().ToLower() == "true" ? "Is Married" : "Not Married";
 
-            input.addEventListener("keyup", function () {
-                var value = this.value.toLowerCase();
-                for (var i = 0; i < rows.length; i++) {
-                    var rowText = rows[i].textContent.toLowerCase();
-                    if (rowText.indexOf(value) > -1) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
+                        <tr class="search-filter">
+                            <th scope="row">@(i + 1)</th>
+                            <td>@contact.Title</td>
+                            <td>@contact.FirstName</td>
+                            <td>@contact.LastName</td>
+                            <td>@contact.Username</td>
+                            <td>@contact.ContactRole</td>
+                            <td>@contact.Email</td>
+                            <td>@contact.BirthDate</td>
+                            <td>@status</td>
+                            <td>@contact.Description</td>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <td> 
+                                    <div class="d-flex">
+                                        <form method="post" asp-page="/EditContact" asp-route-valueToPass="@contact.Username">
+                                            <input type="hidden" name="contact" />
+                                            <button type="submit" class="btn btn-warning mx-2">Edit</button>
+                                        </form>
+                                        <form method="POST" asp-page-handler="DeleteContact">
+                                            <input type="hidden" name="DeleteThisContact" value="@contact.Username" />
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                   
+                                </td>
+                            }
+                        </tr>
                     }
                 }
+                else
+                {
+                    <tr>
+                        <td colspan="8">No contacts to show.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+       
+
+        <script>
+            window.addEventListener("load", function () {
+                var input = document.getElementById("searchInput");
+                var table = document.getElementById("resultTable");
+                var rows = table.getElementsByTagName("tr");
+
+                input.addEventListener("keyup", function () {
+                    var value = this.value.toLowerCase();
+                    for (var i = 0; i < rows.length; i++) {
+                        var rowText = rows[i].textContent.toLowerCase();
+                        if (rowText.indexOf(value) > -1) {
+                            rows[i].style.display = "";
+                        } else {
+                            rows[i].style.display = "none";
+                        }
+                    }
+                });
             });
-        });
-    </script>
-</div>
+        </script>
+    </div>
+}
+else
+{
+    Response.Redirect("/");
+}

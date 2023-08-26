@@ -4,6 +4,41 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center" style="margin-top: 30vh;">
+<div class="text-center mt-5">
     <h1 class="display-4">Welcome to Contacts Database !</h1>
 </div>
+
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    @if (User.IsInRole("Admin"))
+    {
+        Response.Redirect("/AddContact");
+    }
+    else
+    {
+        Response.Redirect("/ContactsList");
+    }
+}
+else
+{
+    <div class="container d-flex justify-content-center">
+        <div class="card mt-5" style="width: 40%;">
+            <div class="card-body p-4">
+                <form method="post" asp-page-handler="Login">
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label for="usernameInput" class="form-label">Username</label>
+                        <input type="text" class="form-control mb-3" id="usernameInput" name="LoginData.Username" placeholder="Enter username..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control mb-3" id="InputPassword" name="LoginData.Password" placeholder="Enter password..." required>
+                    </div>
+                    <div class="d-flex mt-4" style="justify-content: end;">
+                        <input type="submit" value="Log In" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

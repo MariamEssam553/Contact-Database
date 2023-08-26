@@ -1,9 +1,17 @@
 using EdgeDB;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddRazorPages();
+builder.Services.AddAntiforgery();
+builder.Services.AddHttpClient();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+});
 builder.Services.AddEdgeDB(EdgeDBConnection.FromInstanceName("ContactsDB"), config =>
 {
     config.SchemaNamingStrategy = INamingStrategy.CamelCaseNamingStrategy;
@@ -22,8 +30,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

@@ -1,7 +1,7 @@
-﻿@page "/AddContact"
-@model HW10.Pages.AddContactModel
+﻿@page "/EditContact"
+@model HW10.Pages.EditContactModel
 @{
-    ViewData["Title"] = "Add Contact";
+    ViewData["Title"] = "Edit Contact";
 }
 
 @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
@@ -9,20 +9,20 @@
     <div class="container d-flex justify-content-center">
         <div class="card">
             <div class="card-header bg-primary mb-1" style="color: white; font-weight:bold; ">
-                Enter contact info
+                Edit contact info
             </div>
             <div class="p-3">
-                <form method="POST" asp-page="/AddContact" asp-page-handler="@(string.IsNullOrEmpty(Model.NewContact.FirstName) ? "AddContact" : "EditContact")">
+                <form method="POST" asp-page="/EditContact" asp-page-handler="UpdateContact">
                     <div class="row">
                         <div class="col-md-3 mb-3 ms-5 ps-1">
                             <label>Contact Role :</label>
                         </div>
                         <div class="form-check col-md-2 mb-3">
-                            <input class="form-check-input" type="radio" asp-for="NewContact.ContactRole" value="Admin" name="NewContact.ContactRole" id="admin" required>
+                            <input class="form-check-input" type="radio" asp-for="ContactSelected.FirstOrDefault().ContactRole" value="Admin" name="ContactToUpdate.ContactRole" id="admin" required>
                             <label class="form-check-label" for="admin">Admin</label>
                         </div>
                         <div class="form-check col-md-2 mb-3">
-                            <input class="form-check-input" type="radio" asp-for="NewContact.ContactRole" value="Normal" name="NewContact.ContactRole" id="normal" required>
+                            <input class="form-check-input" type="radio" asp-for="ContactSelected.FirstOrDefault().ContactRole" value="Normal" name="ContactToUpdate.ContactRole" id="normal" required>
                             <label class="form-check-label" for="normal">Normal</label>
                         </div>
                     </div>
@@ -32,63 +32,64 @@
                             <label for="title">Title</label>
                         </div>
                         <div class="col-md-4 mb-3 pe-1">
-                            <input class="form-control" type="text" id="title" name="NewContact.Title" placeholder="Mrs, Dr, etc." required />
+                            <input class="form-control" type="text" id="title" name="ContactToUpdate.Title" value="@Model.ContactSelected.FirstOrDefault().Title" required />
                         </div>
                     </div>
                     <div class="row" style="justify-content: center;">
                         <div class="col-md-5 mb-3">
                             <label class="pb-1" for="firstName">First Name</label>
-                            <input class="form-control" type="text" id="firstName" name="NewContact.FirstName" placeholder="First Name" required />
+                            <input class="form-control" type="text" id="firstName" name="ContactToUpdate.FirstName" placeholder="First Name" value="@Model.ContactSelected.FirstOrDefault().FirstName" required />
                         </div>
                         <div class="col-md-5 mb-3">
                             <label class="pb-1" for="lastName">Last Name</label>
-                            <input class="form-control" type="text" id="lastName" name="NewContact.LastName" placeholder="Last Name" required />
+                            <input class="form-control" type="text" id="lastName" name="ContactToUpdate.LastName" placeholder="Last Name" value="@Model.ContactSelected.FirstOrDefault().LastName" required />
                         </div>
                     </div>
                     <div class="row" style="justify-content: center;">
                         <div class="col-md-5 mb-3">
                             <label class="pb-1" for="username">Username</label>
-                            <input class="form-control" type="text" id="username" name="NewContact.Username" placeholder="Username" required />
+                            <input class="form-control" type="text" id="username" name="ContactToUpdate.Username" placeholder="Username" value="@Model.ContactSelected.FirstOrDefault().Username" required />
                         </div>
                         <div class="col-md-5 mb-3">
                             <label class="pb-1" for="password">Password</label>
-                            <input class="form-control" type="password" id="password" name="NewContact.Password" placeholder="Password" required />
+                            <input class="form-control" type="password" id="password" name="ContactToUpdate.Password" placeholder="Password" value="@Model.ContactSelected.FirstOrDefault().Password" required />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3 mb-3 ms-5 ps-1">
                             <label>Married :</label>
                         </div>
+
                         <div class="form-check col-md-2 mb-3">
-                            <input class="form-check-input" type="radio" asp-for="NewContact.Status" value="true" name="NewContact.Status" id="married" required>
+                            <input class="form-check-input" type="radio" asp-for="ContactSelected.FirstOrDefault().Status" value="true" name="ContactToUpdate.Status" id="married" required>
                             <label class="form-check-label" for="married">Yes</label>
                         </div>
                         <div class="form-check col-md-2 mb-3">
-                            <input class="form-check-input" type="radio" asp-for="NewContact.Status" value="false" name="NewContact.Status" id="notMarried" required>
+                            <input class="form-check-input" type="radio" asp-for="ContactSelected.FirstOrDefault().Status" value="false" name="ContactToUpdate.Status" id="notMarried" required>
                             <label class="form-check-label" for="notMarried">No</label>
                         </div>
                     </div>
                     <div class="row" style="justify-content: center;">
                         <div class="col-md-10 mb-3">
                             <label class="pb-1" for="email">Email</label>
-                            <input class="form-control" type="email" id="email" name="NewContact.Email" placeholder="Email" required />
+                            <input class="form-control" type="email" id="email" name="ContactToUpdate.Email" placeholder="Email" value="@Model.ContactSelected.FirstOrDefault().Email" required />
                         </div>
                     </div>
                     <div class="row" style="justify-content: center;">
                         <div class="col-md-10 mb-3">
                             <label class="pb-1" for="birthDate">Choose the birth date</label>
-                            <input type="date" class="form-control" id="birthDate" name="NewContact.BirthDate" required />
+                            <input type="date" class="form-control" id="birthDate" name="ContactToUpdate.BirthDate" value="@Model.ContactSelected.FirstOrDefault().BirthDate" required />
                         </div>
                     </div>
                     <div class="row" style="justify-content: center;">
                         <div class="col-md-10 mb-3">
                             <label class="pb-1" for="description">Description</label>
-                            <textarea class="form-control" id="description" name="NewContact.Description" rows="2" required></textarea>
+                            <textarea class="form-control" id="description" name="ContactToUpdate.Description" rows="2" required>@Model.ContactSelected.FirstOrDefault().Description</textarea>
                         </div>
                     </div>
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="row" style="justify-content: center;">
-                        <input type="submit" value="Add" class="btn btn-outline-primary col-md-2" />
+                        <input type="submit" value="Update" class="btn btn-outline-primary col-md-2" />
                     </div>
                 </form>
             </div>
