@@ -9,6 +9,10 @@ namespace HW10.Pages;
 public class ContactsListModel : PageModel
 {
     public List<Contact> ContactsList { get; set; } = new();
+
+    [BindProperty(Name = "DeleteThisContact")]
+    public string ContactToDelete { get; set; }
+
     private readonly EdgeDBClient _client;
 
     public ContactsListModel(EdgeDBClient client)
@@ -27,6 +31,18 @@ public class ContactsListModel : PageModel
         }
 
         return Page();
+    }
+
+    public async Task<IActionResult> OnPostDeleteContact()
+    {
+        var query = "DELETE Contact FILTER Contact .username = <str>$username";
+
+        await _client.ExecuteAsync(query, new Dictionary<string, object?>
+        {
+            {"username", ContactToDelete }
+        });
+
+        return RedirectToPage();
     }
 
     public async Task<IActionResult> OnPostLogoutAsync()

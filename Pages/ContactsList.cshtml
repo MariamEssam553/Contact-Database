@@ -61,8 +61,8 @@
                                             <input type="hidden" name="contact" />
                                             <button type="submit" class="btn btn-warning mx-2">Edit</button>
                                         </form>
-                                        <form method="POST" asp-page="/AddContact" asp-page-handler="Edit">
-                                            <input type="hidden" name="contact" />
+                                        <form method="POST" asp-page-handler="DeleteContact">
+                                            <input type="hidden" name="DeleteThisContact" value="@contact.Username" />
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
                                     </div>
